@@ -34,9 +34,7 @@ export const signinWithPassword = async (p: { pb: PocketBase; data: TUserSignInS
 
     return { success: true, messages: ["Successfully logged in user"] as string[] } as const;
   } catch (error) {
-    console.log(`dbAuthUtils.ts:${/*LL*/ 37}`, error);
     const messagesResp = extractMessageFromPbError({ error });
-    console.log(`dbAuthUtils.ts:${/*LL*/ 37}`, messagesResp);
 
     const messages = ["Failed to sign in user", ...(messagesResp ? messagesResp : [])];
 
@@ -89,7 +87,6 @@ export const requestVerificationEmail = async (p: { pb: PocketBase; email: strin
 export const confirmVerificationEmail = async (p: { pb: PocketBase; token: string }) => {
   try {
     const resp = await p.pb.collection(collectionName).confirmVerification(p.token);
-    console.log(`dbAuthUtils.ts:${/*LL*/ 89}`, { resp });
 
     const schema = z.literal(true);
     schema.parse(resp);
@@ -238,7 +235,6 @@ export const signUpWithPassword = async (p: { pb: PocketBase; data: TUserSignUpS
     return { success: true, messages } as const;
   } catch (error) {
     const messagesResp = extractMessageFromPbError({ error });
-    console.log(`dbAuthUtils.ts:${/*LL*/ 240}`, { error, messagesResp });
 
     const title = "Failed to sign up user";
     const messages = [title, ...(messagesResp ? messagesResp : [])];
