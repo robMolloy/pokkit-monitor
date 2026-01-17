@@ -10,7 +10,8 @@ export const pocketbaseAuthStoreSchema = z.object({
 export type TAuth = z.infer<typeof pocketbaseAuthStoreSchema>;
 export type TUser = z.infer<typeof userSchema>;
 type TUserSignInSeed = Pick<TUser, "email"> & { password: string };
-type TUserSignUpSeed = Pick<TUser, "email" | "name" | "emailVisibility" | "role" | "status"> & {
+type TUserSignUpSeed = Pick<TUser, "email" | "name" | "emailVisibility"> & {
+  // type TUserSignUpSeed = Pick<TUser, "email" | "name" | "emailVisibility" | "role" | "status"> & {
   password: string;
   passwordConfirm: string;
 };
@@ -33,7 +34,9 @@ export const signinWithPassword = async (p: { pb: PocketBase; data: TUserSignInS
 
     return { success: true, messages: ["Successfully logged in user"] as string[] } as const;
   } catch (error) {
+    console.log(`dbAuthUtils.ts:${/*LL*/ 37}`, error);
     const messagesResp = extractMessageFromPbError({ error });
+    console.log(`dbAuthUtils.ts:${/*LL*/ 37}`, messagesResp);
 
     const messages = ["Failed to sign in user", ...(messagesResp ? messagesResp : [])];
 
@@ -235,6 +238,7 @@ export const signUpWithPassword = async (p: { pb: PocketBase; data: TUserSignUpS
     return { success: true, messages } as const;
   } catch (error) {
     const messagesResp = extractMessageFromPbError({ error });
+    console.log(`dbAuthUtils.ts:${/*LL*/ 240}`, { error, messagesResp });
 
     const title = "Failed to sign up user";
     const messages = [title, ...(messagesResp ? messagesResp : [])];

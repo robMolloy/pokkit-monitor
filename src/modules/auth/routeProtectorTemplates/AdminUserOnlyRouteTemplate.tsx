@@ -11,8 +11,8 @@ export const AdminUserOnlyRouteTemplate = (p: {
 }) => {
   const currentUserStore = useCurrentUserStore();
 
-  const isAdmin =
-    currentUserStore.data.authStatus === "loggedIn" && currentUserStore.data.user.role === "admin";
+  const isAdmin = currentUserStore.data.authStatus === "loggedIn";
+  // && currentUserStore.data.user.role === "admin";
 
   return (
     <GenericRouteProtectorTemplate

@@ -10,6 +10,7 @@
     "preview": "vite preview",
     "tsc": "node_modules/.bin/tsc --project ./tsconfig.app.json --noemit --watch",
     "kill-port": "kill -9 $(lsof -i:${PORT:?} -t | head -n 1)",
+    "kill:fe": "PORT=5173 npm run kill-port",
     "kill:db": "PORT=8090 npm run kill-port",
     "db:start": "./pocketbase-leader/pocketbase serve --http=\"0.0.0.0:8090\"",
     "db:create-backup": "pocketbase-leader/scripts/create-backup.mjs",
