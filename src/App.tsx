@@ -31,7 +31,10 @@ function AppWrapper() {
       subscribeToUserGlobalUserPermissions({
         pb,
         userId: user.id,
-        onChange: (x) => globalUserPermissionsStore.setData(x),
+        onChange: (x) => {
+          console.log(`App.tsx:${/*LL*/ 35}`, { x });
+          globalUserPermissionsStore.setData(x);
+        },
       });
     },
     onIsLoggedOut: () => {},
@@ -41,7 +44,10 @@ function AppWrapper() {
     <BrowserRouter basename={import.meta.env.VITE_APP_BASE_URL}>
       <LayoutTemplate
         Header={<Header />}
-        LeftSidebar={currentUserStore.data.authStatus === "loggedIn" && <LeftSidebar />}
+        LeftSidebar={
+          currentUserStore.data.authStatus === "loggedIn" &&
+          globalUserPermissionsStore.data && <LeftSidebar />
+        }
       >
         <App />
       </LayoutTemplate>

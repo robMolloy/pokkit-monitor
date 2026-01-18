@@ -17,13 +17,12 @@ export const AdminUserOnlyRouteTemplate = (p: {
     currentUserStore.data.authStatus === "loggedIn" &&
     globalUserPermissionsStore.data?.role === "admin";
 
+  const isLoading =
+    currentUserStore.data.authStatus === "loading" || globalUserPermissionsStore.data === undefined;
   return (
     <GenericRouteProtectorTemplate
       children={p.children}
-      loadingCondition={() =>
-        currentUserStore.data.authStatus === "loading" ||
-        globalUserPermissionsStore.data === undefined
-      }
+      loadingCondition={() => isLoading}
       condition={() => isAdmin}
       ConditionLoadingComponent={p.LoadingComponent}
       ConditionSuccessComponent={p.children}
