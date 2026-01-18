@@ -9,7 +9,7 @@ import { useCurrentUserStore } from "./modules/auth/authDataStore";
 import { useInitAuth } from "./modules/auth/useInitAuth";
 import { pb } from "./config/pocketbaseConfig";
 import { smartSubscribeToUsers } from "./modules/auth/users/dbUsersUtils";
-import { subscribeToUserGlobalUserPermissions } from "./modules/auth/globalUserPermissions/dbGlobalUserPermissions";
+import { subscribeToGlobalUserPermissions } from "./modules/auth/globalUserPermissions/dbGlobalUserPermissions";
 import { useGlobalUserPermissionsStore } from "./modules/auth/globalUserPermissions/globalUserPermissionsStore";
 
 function App() {
@@ -27,15 +27,12 @@ function AppWrapper() {
     pb: pb,
     onIsLoading: () => {},
     onIsLoggedIn: (user) => {
-      smartSubscribeToUsers({ pb, onChange: (x) => usersStore.setData(x) });
-      subscribeToUserGlobalUserPermissions({
+      subscribeToGlobalUserPermissions({
         pb,
         userId: user.id,
-        onChange: (x) => {
-          console.log(`App.tsx:${/*LL*/ 35}`, { x });
-          globalUserPermissionsStore.setData(x);
-        },
+        onChange: (x) => globalUserPermissionsStore.setData(x),
       });
+      smartSubscribeToUsers({ pb, onChange: (x) => usersStore.setData(x) });
     },
     onIsLoggedOut: () => {},
   });

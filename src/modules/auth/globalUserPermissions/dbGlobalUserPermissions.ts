@@ -25,7 +25,7 @@ export const getGlobalUserPermissions = async (p: { pb: PocketBase; userId: stri
   }
 };
 
-export const subscribeToUserGlobalUserPermissions = async (p: {
+export const subscribeToGlobalUserPermissions = async (p: {
   pb: PocketBase;
   userId: string;
   onChange: (e: TGlobalUserPermissions | null) => void;

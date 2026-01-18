@@ -1,5 +1,6 @@
 import { cn } from "@/lib/utils";
 import {
+  LogOutIcon,
   Key,
   Mail,
   FileTextIcon,
@@ -47,6 +48,7 @@ import {
 } from "lucide-react";
 
 const iconMap = {
+  LogOutIcon,
   Key,
   Mail,
   FileTextIcon,
