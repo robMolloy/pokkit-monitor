@@ -13,9 +13,11 @@ export const globalUserPermissionsSchema = z.object({
 
 export type TGlobalUserPermissions = z.infer<typeof globalUserPermissionsSchema>;
 
-export const getGlobalUserPermissions = async (p: { pb: PocketBase; id: string }) => {
+export const getGlobalUserPermissions = async (p: { pb: PocketBase; userId: string }) => {
   try {
-    const globalUserPermissionsResp = await p.pb.collection(collectionName).getOne(p.id);
+    const globalUserPermissionsResp = await p.pb
+      .collection(collectionName)
+      .getFirstListItem(`userId="${p.userId}"`);
     return globalUserPermissionsSchema.safeParse(globalUserPermissionsResp);
   } catch (e) {
     const error = e as { message: string };
@@ -25,15 +27,15 @@ export const getGlobalUserPermissions = async (p: { pb: PocketBase; id: string }
 
 export const subscribeToUserGlobalUserPermissions = async (p: {
   pb: PocketBase;
-  id: string;
+  userId: string;
   onChange: (e: TGlobalUserPermissions | null) => void;
 }) => {
   try {
-    const unsubPromise = p.pb.collection(collectionName).subscribe(p.id, (e) => {
+    const unsubPromise = p.pb.collection(collectionName).subscribe(p.userId, (e) => {
       const parseResp = globalUserPermissionsSchema.safeParse(e.record);
       p.onChange(parseResp.success ? parseResp.data : null);
     });
-    const globalUserPermissionsPromise = getGlobalUserPermissions(p);
+    const globalUserPermissionsPromise = getGlobalUserPermissions({ pb: p.pb, userId: p.userId });
 
     // subscription must be complete to avoid any race conditions issues
     // avoid using promises.all to be explicit
@@ -45,6 +47,32 @@ export const subscribeToUserGlobalUserPermissions = async (p: {
     return { success: true, data: unsub } as const;
   } catch (error) {
     p.onChange(null);
+    return { success: false, error } as const;
+  }
+};
+
+export const updateGlobalUserPermissionsStatus = async (p: {
+  pb: PocketBase;
+  id: string;
+  status: TGlobalUserPermissions["status"];
+}) => {
+  try {
+    const resp = await p.pb.collection(collectionName).update(p.id, { status: p.status });
+    return { success: true, data: resp } as const;
+  } catch (error) {
+    return { success: false, error } as const;
+  }
+};
+
+export const updateGlobalUserPermissionsRole = async (p: {
+  pb: PocketBase;
+  id: string;
+  role: TGlobalUserPermissions["role"];
+}) => {
+  try {
+    const resp = await p.pb.collection(collectionName).update(p.id, { role: p.role });
+    return { success: true, data: resp } as const;
+  } catch (error) {
     return { success: false, error } as const;
   }
 };

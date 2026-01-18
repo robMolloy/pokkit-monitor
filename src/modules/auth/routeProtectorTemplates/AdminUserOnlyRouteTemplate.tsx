@@ -1,4 +1,5 @@
 import { useCurrentUserStore } from "../authDataStore";
+import { useGlobalUserPermissionsStore } from "../globalUserPermissions/globalUserPermissionsStore";
 import { GenericRouteProtectorTemplate } from "./GenericRouteProtectorTemplate";
 
 export const AdminUserOnlyRouteTemplate = (p: {
@@ -10,14 +11,19 @@ export const AdminUserOnlyRouteTemplate = (p: {
   onIsFailure?: () => void;
 }) => {
   const currentUserStore = useCurrentUserStore();
+  const globalUserPermissionsStore = useGlobalUserPermissionsStore();
 
-  const isAdmin = currentUserStore.data.authStatus === "loggedIn";
-  // && currentUserStore.data.user.role === "admin";
+  const isAdmin =
+    currentUserStore.data.authStatus === "loggedIn" &&
+    globalUserPermissionsStore.data?.role === "admin";
 
   return (
     <GenericRouteProtectorTemplate
       children={p.children}
-      loadingCondition={() => currentUserStore.data.authStatus === "loading"}
+      loadingCondition={() =>
+        currentUserStore.data.authStatus === "loading" ||
+        globalUserPermissionsStore.data === undefined
+      }
       condition={() => isAdmin}
       ConditionLoadingComponent={p.LoadingComponent}
       ConditionSuccessComponent={p.children}

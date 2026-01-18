@@ -42,8 +42,6 @@ export const SignupWithEmailAndPasswordForm = (p: {
         data: {
           name,
           email,
-          // status: "pending",
-          // role: "standard",
           emailVisibility: true,
           password,
           passwordConfirm,

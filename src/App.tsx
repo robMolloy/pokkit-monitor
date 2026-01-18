@@ -30,7 +30,7 @@ function AppWrapper() {
       smartSubscribeToUsers({ pb, onChange: (x) => usersStore.setData(x) });
       subscribeToUserGlobalUserPermissions({
         pb,
-        id: user.id,
+        userId: user.id,
         onChange: (x) => globalUserPermissionsStore.setData(x),
       });
     },
