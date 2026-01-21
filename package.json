@@ -9,10 +9,12 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "tsc": "node_modules/.bin/tsc --project ./tsconfig.app.json --noemit --watch",
+    "test": "vitest",
     "kill-port": "kill -9 $(lsof -i:${PORT:?} -t | head -n 1)",
     "kill:fe": "PORT=5173 npm run kill-port",
     "kill:db": "PORT=8090 npm run kill-port",
     "db:start": "./pocketbase-leader/pocketbase serve --http=\"0.0.0.0:8090\"",
+    "db:migrate:collections": "./pocketbase-leader/pocketbase migrate collections",
     "db:create-backup": "pocketbase-leader/scripts/create-backup.mjs",
     "db:replace-seed": "pocketbase-leader/scripts/replace-seed.mjs",
     "db:restore-seed": "pocketbase-leader/scripts/restore-seed.mjs",
@@ -62,6 +64,7 @@
     "typescript": "~5.8.3",
     "typescript-eslint": "^8.44.0",
     "vite": "^7.1.7",
-    "vite-plugin-pages": "^0.33.1"
+    "vite-plugin-pages": "^0.33.1",
+    "vitest": "^4.0.17"
   }
 }
